@@ -8,8 +8,8 @@ def simple_search_engine(search, *urls)
 	urls_array = []
 	urls.each do |url|
 		file = open(url)
-		text = Nokogiri::HTML(file).css('div').inner_html
-		p text
+		text = Nokogiri::HTML(file).css('body').inner_html
+		# p text
 		urls_array << text
 		inner_html_hash[text] = url
 	end
@@ -63,11 +63,11 @@ def simple_search_engine(search, *urls)
 	end
 
 	#priority hash containing occurrences and (similar word occurences / 20) or so 
-
-	urls.sort! {|a,b| priority[a] <=> priority[b]}
+	p occurrences
+	urls.sort! {|a,b| occurrences[a] <=> occurrences[b]}
 	urls.each_with_index do |url, index|
 		p "#{index + 1}. #{url}"
 	end
 end
 
-simple_search_engine("warren hello green", 'http://www.google.com', 'http://espn.go.com/', 'http://www.berkshirehathaway.com/')
+simple_search_engine("warren hello green baseball google", 'http://www.google.com', 'http://espn.go.com/', 'http://www.berkshirehathaway.com/')
