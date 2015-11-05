@@ -62,4 +62,4 @@ def simple_search_engine(search, *urls)
 	end
 end
 
-simple_search_engine("warren hello green baseball google", 'http://www.google.com', 'http://espn.go.com/')
+simple_search_engine("hello green baseball google", 'http://www.google.com', 'http://espn.go.com/')
