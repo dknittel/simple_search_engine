@@ -12,6 +12,21 @@ def simple_search_engine(search, *urls)
 		inner_html_hash[text] = url
 	end
 
+	occurrences = {}
+	urls.each do |url|
+		occurrences[url] = 0
+	end
+
+	urls_array.each do |text|
+		text.split(' ').each do |word|
+			search.split(' ').each do |search_word|
+				if word.downcase == search_word.downcase
+					occurrences[inner_html_hash[text]] += 1
+				end
+			end
+		end
+	end
+
 	similar_words = []
 	search.split(' ').each do |word|
 		similar_word_html = Nokogiri::HTML(open("http://www.thesaurus.com/browse/#{word}")).css('div.relevancy-list span.text').children
@@ -35,29 +50,15 @@ def simple_search_engine(search, *urls)
 		end
 	end
 
-	occurrences = {}
-	urls.each do |url|
-		occurrences[url] = 0
-	end
-
-	urls_array.each do |text|
-		text.split(' ').each do |word|
-			search.split(' ').each do |search_word|
-				if word.downcase == search_word.downcase
-					occurrences[inner_html_hash[text]] += 1
-				end
-			end
-		end
-	end
-
 	priority = {}
 	urls.each do |url|
+		p url
 		priority[url] = occurrences[url] + (similar_word_occurrences[url] / 20)
+		p priority[url]
 	end
 
-
 	urls.sort! {|a,b| priority[a] <=> priority[b]}
-	urls.each_with_index do |url, index|
+	urls.reverse.each_with_index do |url, index|
 		p "#{index + 1}. #{url}"
 	end
 end
