@@ -52,9 +52,7 @@ def simple_search_engine(search, *urls)
 
 	priority = {}
 	urls.each do |url|
-		p url
 		priority[url] = occurrences[url] + (similar_word_occurrences[url] / 20)
-		p priority[url]
 	end
 
 	urls.sort! {|a,b| priority[a] <=> priority[b]}
